@@ -2,6 +2,7 @@ package com.capgemini.chess.algorithms.implementation;
 
 import static org.junit.Assert.*;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
