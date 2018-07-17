@@ -9,4 +9,6 @@ public interface Factory {
 
      boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType)
             throws InvalidMoveException ;
+
+
 }

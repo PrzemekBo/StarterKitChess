@@ -13,6 +13,7 @@ import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
+import com.capgemini.chess.algorithms.implementation.exceptions.Validator;
 
 /**
  * Class for managing of basic operations on the Chess Board.
@@ -233,10 +234,17 @@ public class BoardManager {
 
     private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
 
+        Validator validate=new Validator();
+        validate.checkIfIsOnBoard(from,to);
+
+        validate.checkTheOccupationOfTheField(from);
+
+
         return null;
     }
 
     private boolean isKingInCheck(Color kingColor) {
+
 
         // TODO please add implementation here
         return false;

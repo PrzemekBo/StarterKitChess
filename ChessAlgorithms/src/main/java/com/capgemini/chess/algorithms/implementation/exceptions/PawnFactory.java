@@ -20,8 +20,6 @@ public class PawnFactory implements Factory {
             case PAWN:
                 if (piece.getColor().equals(Color.WHITE)) {
                     if (moveType == MoveType.CAPTURE) {
-                    /*    if (ChangeOfLocationX == -1 && ChangeOfLocationY == -1) {
-                            return true;*/
                         if (changeOfLocationX == 1 && changeOfLocationY == -1) {
                             return true;
 
