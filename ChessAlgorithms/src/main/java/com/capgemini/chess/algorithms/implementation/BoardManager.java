@@ -234,7 +234,7 @@ public class BoardManager {
 
     private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
 
-        Validator validate=new Validator();
+        Validator validate=new Validator(this);
         validate.checkIfIsOnBoard(from,to);
 
         validate.checkTheOccupationOfTheField(from);

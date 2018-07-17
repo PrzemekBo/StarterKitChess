@@ -7,21 +7,33 @@ import com.capgemini.chess.algorithms.implementation.BoardManager;
 
 public class Validator {
 
+   // Board board= new Board();
+
+    BoardManager boardManager;
+
+    public Validator(BoardManager boardManager){
+        this.boardManager=boardManager;
+    }
+
 
     //TODO nie jestem pewny tej metody
-    public boolean checkIfIsOnBoard(Coordinate fromPlace, Coordinate toPlace) throws InvalidMoveException {
-        if (fromPlace.getY() >= 8 || fromPlace.getX() >= 8 || toPlace.getY() >= 8 || toPlace.getX() >= 8 ||
+    public static void checkIfIsOnBoard(Coordinate fromPlace, Coordinate toPlace) throws InvalidMoveException {
+     /*   if (fromPlace.getY() >= 8 || fromPlace.getX() >= 8 || toPlace.getY() >= 8 || toPlace.getX() >= 8 ||
                 fromPlace.getY() < 0 || fromPlace.getX() < 0 || toPlace.getY() < 0 || toPlace.getX() < 0) {
             throw new InvalidMoveException();
         } else {
             return true;
-        }
+        }*/
+        if (fromPlace.getY() >= Board.SIZE || fromPlace.getY() < 0 || fromPlace.getX() >= Board.SIZE || fromPlace.getX() < 0)
+            throw new InvalidMoveException();
+
     }
 
+
     public boolean checkTheOccupationOfTheField(Coordinate coordinate) throws InvalidMoveException {
-        BoardManager boardManager=new BoardManager();
-        boardManager.getBoard();
-        Board board= new Board();
+
+
+        Board board=  boardManager.getBoard();
         Piece piece = board.getPieceAt(coordinate);
 
         // sprawdzenie czy to nie jest puste pole
