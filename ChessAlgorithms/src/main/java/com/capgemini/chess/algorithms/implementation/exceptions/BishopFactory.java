@@ -4,6 +4,7 @@ import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
+import com.capgemini.chess.algorithms.data.generated.Board;
 
 public class BishopFactory  implements Factory {
     @Override
@@ -19,5 +20,51 @@ public class BishopFactory  implements Factory {
 
     }
 
+    @Override
+    public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
+
+
+        if (fromPlace.getX()>toPlace.getX()&&fromPlace.getY()>toPlace.getY()) {
+            for (int x = fromPlace.getX() + 1, y = fromPlace.getY() + 1; x > toPlace.getX() && y > toPlace.getY(); x++, y++) {
+                Coordinate coordinate = new Coordinate(x, y);
+                if (board.getPieceAt(coordinate) != null) {
+                    throw new InvalidMoveException();
+                }
+            }
+        }
+        if (fromPlace.getX()>toPlace.getX()&&fromPlace.getY()<toPlace.getY()) {
+            for (int x = fromPlace.getX() + 1, y = fromPlace.getY() + 1; x > toPlace.getX() && y < toPlace.getY(); x++, y++) {
+                Coordinate coordinate = new Coordinate(x, y);
+                if (board.getPieceAt(coordinate) != null) {
+                    throw new InvalidMoveException();
+                }
+            }
+        }
+
+
+        if (fromPlace.getX()<toPlace.getX()&&fromPlace.getY()<toPlace.getY()){
+            for (int x=fromPlace.getX()+1,y=fromPlace.getY()+1;x<toPlace.getX()&&y<toPlace.getY();x++,y++) {
+                Coordinate coordinate = new Coordinate(x, y);
+                if (board.getPieceAt(coordinate) != null) {
+                    throw  new InvalidMoveException();
+                }
+            }
+
+        }
+        if (fromPlace.getX()<toPlace.getX()&&fromPlace.getY()>toPlace.getY()) {
+            for (int x = fromPlace.getX() + 1, y = fromPlace.getY() + 1; x < toPlace.getX() && y > toPlace.getY(); x++, y++) {
+                Coordinate coordinate = new Coordinate(x, y);
+                if (board.getPieceAt(coordinate) != null) {
+                    throw new InvalidMoveException();
+                }
+            }
+        }
+
+
+
+        return true;
+}
+
 
 }
+

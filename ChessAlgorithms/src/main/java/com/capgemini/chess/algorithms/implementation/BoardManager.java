@@ -286,13 +286,7 @@ public class BoardManager {
         }
     }
 
-    private void checkItIsYoursPiece(){
 
-        if (!piece.getColor().equals(calculateNextMoveColor())) {
-            throw new InvalidMoveException();
-        }
-
-    }
 
     private Color calculateNextMoveColor() {
         if (this.board.getMoveHistory().size() % 2 == 0) {

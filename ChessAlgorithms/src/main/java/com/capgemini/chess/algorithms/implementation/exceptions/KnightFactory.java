@@ -4,6 +4,7 @@ import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
+import com.capgemini.chess.algorithms.data.generated.Board;
 
 public class KnightFactory implements Factory {
 
@@ -22,6 +23,11 @@ public class KnightFactory implements Factory {
                     return true;
                 }
 
+    }
+
+    @Override
+    public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
+        return false;
     }
 
 
