@@ -1,4 +1,4 @@
-package com.capgemini.chess.algorithms.implementation;
+package com.capgemini.chess.algorithms.data.tresd;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import com.capgemini.chess.algorithms.implementation.exceptions.*;
  *
  * @author Michal Bejm
  */
-public class BoardManager {
+public class Validator {
 
     private Board board = new Board();
 
@@ -236,13 +236,30 @@ public class BoardManager {
     private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
 
 
-        valideteIfPieceIsOnBoard(from, to);
-        validateIfSpotIsNotNull(from);
-        Piece piece = validateIfThePawnIsMoving(from, to);
+        checkIfIsOnBoard(from, to);
+        Piece piece = checkIfThePawnIsMoving(from, to);
         Color colorOfNextPlayer = calculateNextMoveColor();
-        checkIfOnTheSpotIsNotMyPiece(this.board, from, to);
-        validateIfPieceIsYour(piece,colorOfNextPlayer);
 
+
+        checkPieceIsYour(piece, colorOfNextPlayer);
+
+        checkIfPieceIsNotYour(to, colorOfNextPlayer);
+
+        MoveType moveType = setMoveType(to, colorOfNextPlayer);
+        Factory factory = returningContext(piece);
+
+
+        // Validator validate=new Validator(this);
+
+        // boardManager.checkIfIsOnBoard(from, to);
+
+        //  validate.checkIfIsOnBoard(from,to);
+        // boardManager.checkTheOccupationOfTheField(from);
+
+        // validate.checkTheOccupationOfTheField(from);
+
+
+        //  Piece piece = board.getPieceAt(from);
 
 
         return null;
@@ -260,42 +277,34 @@ public class BoardManager {
     }
 
 
-    public static void valideteIfPieceIsOnBoard(Coordinate fromPlace, Coordinate toPlace) throws InvalidMoveException {
+    public static void checkIfIsOnBoard(Coordinate fromPlace, Coordinate toPlace) throws InvalidMoveException {
 
         if (toPlace.getY() >= Board.SIZE || toPlace.getY() < 0 || fromPlace.getX() >= Board.SIZE || fromPlace.getX() < 0)
             throw new InvalidMoveException();
     }
 
 
+    //TODO nie jestem pewny tej metody
 
-    private Piece validateIfThePawnIsMoving(Coordinate from, Coordinate to)throws InvalidMoveException {
+    private void checkTheOccupationOfTheField(Coordinate coordinate) throws InvalidMoveException {
+
+
+        if (board.getPieces()[coordinate.getX()][coordinate.getY()] == null
+                || board.getPieces()[coordinate.getX()][coordinate.getY()].getColor() != calculateNextMoveColor()) {
+            throw new InvalidMoveException();
+        }
+    }
+
+    private Piece checkPieceInCoordinateFrom(Coordinate from) throws InvalidMoveException {
         Piece piece = board.getPieceAt(from);
-        if (from.getX() != to.getX() || from.getY() != to.getY()) {
-            return piece;
-        } else {
+        if (piece == null) {
             throw new InvalidMoveException();
         }
+
+        return piece;
     }
 
-
-    private void validateIfSpotIsNotNull(Coordinate from) throws InvalidMoveException {
-        if (this.board.getPieceAt(from)==null)
-            throw new InvalidMoveException();
-    }
-
-    private void checkIfOnTheSpotIsNotMyPiece(Board board, Coordinate from, Coordinate to)
-            throws InvalidMoveException {
-        Piece targetPiece = board.getPieceAt(to);
-        if (targetPiece == null) {
-            return;
-        }
-
-        if (board.getPieceAt(from).getColor() == board.getPieceAt(to).getColor()) {
-            throw new InvalidMoveException();
-        }
-    }
-
-    private void validateIfPieceIsYour(Piece piece, Color colorOfNextPlayer) throws InvalidMoveException {
+    private void checkPieceIsYour(Piece piece, Color colorOfNextPlayer) throws InvalidMoveException {
         if (piece.getColor().equals(colorOfNextPlayer)) {
             return;
         } else {
@@ -304,6 +313,75 @@ public class BoardManager {
         }
     }
 
+
+    private MoveType setMoveType(Coordinate to, Color nextMoveColor) {
+        if (board.getPieceAt(to) != null && board.getPieceAt(to).getColor() != nextMoveColor) {
+            return MoveType.CAPTURE;
+        }
+
+        return MoveType.ATTACK;
+    }
+
+
+
+    public boolean checkIfStandingStillInSamePlace(Coordinate from, Coordinate to) throws InvalidMoveException {
+
+        if (from.getX() != to.getX() || from.getY() != to.getY()) {
+            return true;
+        } else {
+            throw new InvalidMoveException();
+        }
+    }
+
+
+
+
+    private Piece 	checkIfPieceIsInCoordinateFrom(Coordinate from) throws InvalidMoveException {
+        Piece piece = board.getPieceAt(from);
+        if (piece == null) {
+            throw new InvalidMoveException();
+        }
+
+        return piece;
+    }
+
+    private void checkIfPieceIsNotYour(Coordinate toPlace, Color colorOfNextPlayer) throws InvalidMoveException {
+        Color targetPieceColor = null;
+
+        if (board.getPieceAt(toPlace) != null) {
+            targetPieceColor = board.getPieceAt(toPlace).getColor();
+        }
+
+        if (targetPieceColor != null && targetPieceColor.equals(colorOfNextPlayer)) {
+            throw new InvalidMoveException();
+        }
+    }
+
+    private Factory returningContext(Piece piece) {
+        if (piece.getType().equals(PieceType.BISHOP)) {
+            return new BishopFactory();
+        } else if (piece.getType().equals(PieceType.ROOK)) {
+            return new RookFactory();
+        } else if (piece.getType().equals(PieceType.KING)) {
+            return new KingFactory();
+        } else if (piece.getType().equals(PieceType.QUEEN)) {
+            return new QueenFactory();
+        } else if (piece.getType().equals(PieceType.KNIGHT)) {
+            return new KnightFactory();
+        } else {
+            return (Factory) new PawnFactory();
+        }
+    }
+
+
+    private Piece checkIfThePawnIsMoving(Coordinate from, Coordinate to)throws InvalidMoveException {
+        Piece piece = board.getPieceAt(from);
+        if (from.getX() != to.getX() || from.getY() != to.getY()) {
+            return piece;
+        } else {
+            throw new InvalidMoveException();
+        }
+    }
 
 
 

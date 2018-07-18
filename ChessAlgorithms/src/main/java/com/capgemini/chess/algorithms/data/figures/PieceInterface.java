@@ -18,9 +18,11 @@ public interface PieceInterface {
     Move validateMove(Piece[][] state, Coordinate from, Coordinate to) throws InvalidMoveException;
 
 
+    //given
 
+    //when
 
-
+    //then
 
 
 
