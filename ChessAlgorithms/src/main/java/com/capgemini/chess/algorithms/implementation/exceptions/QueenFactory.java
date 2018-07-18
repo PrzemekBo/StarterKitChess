@@ -29,8 +29,22 @@ public class QueenFactory implements Factory {
     @Override
     public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
 
-        //TODO nie jestem pewwien jak to polaczc
-        return false;
+
+        RookFactory rookFactory =new RookFactory();
+        BishopFactory bishopFactory= new BishopFactory();
+
+        rookFactory.validateMovePath(fromPlace,toPlace,board);
+        try {
+            rookFactory.validateMovePath(fromPlace,toPlace,board);
+
+        }catch (InvalidMoveException a){
+            bishopFactory.validateMovePath(fromPlace,toPlace,board);
+
+
+        }
+
+
+        return true;
     }
 
 }
