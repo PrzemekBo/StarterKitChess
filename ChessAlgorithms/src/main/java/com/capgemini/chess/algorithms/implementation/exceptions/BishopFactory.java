@@ -7,37 +7,17 @@ import com.capgemini.chess.algorithms.data.enums.PieceType;
 
 public class BishopFactory  implements Factory {
     @Override
-    public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) throws InvalidMoveException {
-        PieceType pieceType = piece.getType();
+    public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType)  {
 
         int changeOfLocationX = Math.abs(fromPlace.getX() - toPlace.getX());
         int changeOfLocationY = Math.abs(fromPlace.getY() - toPlace.getY());
 
-
-        //TODO upewnij sie mcz tyle metod i czy dobre zakresy
-
-        switch (pieceType) {
-            case BISHOP:
-            /*    if (Math.abs(from.getX() - to.getX()) == Math.abs(from.getY() - to.getY())) {
+                if (changeOfLocationX == changeOfLocationY) {
                     return true;
-                } else {
-                    //throw new InvalidMoveException();
+                }else
                     return false;
-                }*/
-                if (changeOfLocationX == changeOfLocationX) {
-                    return true;
-                } else {
-                    throw new InvalidMoveException();
-                }
-        }
 
-
-
-        throw new InvalidMoveException();
     }
-
-
-
 
 
 }

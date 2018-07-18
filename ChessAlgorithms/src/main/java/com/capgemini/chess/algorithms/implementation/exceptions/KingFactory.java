@@ -10,15 +10,9 @@ public class KingFactory implements Factory {
     @Override
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) throws InvalidMoveException {
 
-        PieceType pieceType = piece.getType();
-
-
         int changeOfLocationX = Math.abs(fromPlace.getX() - toPlace.getX());
         int changeOfLocationY = Math.abs(fromPlace.getY() - toPlace.getY());
 
-        switch (pieceType) {
-
-            case KING:
                 if (changeOfLocationX == 1 && changeOfLocationY == 0) {
                     return true;
 
@@ -34,7 +28,7 @@ public class KingFactory implements Factory {
 
 
 
-                throw new InvalidMoveException();
+
         }
 
 

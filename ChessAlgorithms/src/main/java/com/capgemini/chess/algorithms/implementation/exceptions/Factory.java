@@ -7,8 +7,8 @@ import com.capgemini.chess.algorithms.data.enums.Piece;
 
 public interface Factory {
 
-     boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType)
-            throws InvalidMoveException ;
+     boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType);
+
 
 
 }

@@ -13,7 +13,7 @@ import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
-import com.capgemini.chess.algorithms.implementation.exceptions.Validator;
+
 
 /**
  * Class for managing of basic operations on the Chess Board.
@@ -234,10 +234,19 @@ public class BoardManager {
 
     private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
 
-        Validator validate=new Validator(this);
-        validate.checkIfIsOnBoard(from,to);
+       // Validator validate=new Validator(this);
+        BoardManager boardManager= new BoardManager();
 
-        validate.checkTheOccupationOfTheField(from);
+        boardManager.checkIfIsOnBoard(from, to);
+
+      //  validate.checkIfIsOnBoard(from,to);
+        boardManager.checkTheOccupationOfTheField(from);
+
+       // validate.checkTheOccupationOfTheField(from);
+
+
+        Piece piece = board.getPieceAt(from);
+
 
 
         return null;
@@ -255,6 +264,34 @@ public class BoardManager {
         // TODO please add implementation here
 
         return false;
+    }
+
+    //TODO nie jestem pewny tej metody
+    public static void checkIfIsOnBoard(Coordinate fromPlace, Coordinate toPlace) throws InvalidMoveException {
+
+        if (fromPlace.getY() >= Board.SIZE || fromPlace.getY() < 0 || fromPlace.getX() >= Board.SIZE || fromPlace.getX() < 0)
+            throw new InvalidMoveException();
+    }
+
+
+    //TODO nie jestem pewny tej metody
+
+    private void checkTheOccupationOfTheField(Coordinate coordinate) throws InvalidMoveException {
+
+
+
+        if (board.getPieces()[coordinate.getX()][coordinate.getY()] == null
+                || board.getPieces()[coordinate.getX()][coordinate.getY()].getColor() != calculateNextMoveColor()) {
+            throw new InvalidMoveException();
+        }
+    }
+
+    private void checkItIsYoursPiece(){
+
+        if (!piece.getColor().equals(calculateNextMoveColor())) {
+            throw new InvalidMoveException();
+        }
+
     }
 
     private Color calculateNextMoveColor() {
