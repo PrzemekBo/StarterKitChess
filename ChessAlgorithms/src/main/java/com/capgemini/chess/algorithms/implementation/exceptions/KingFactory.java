@@ -8,7 +8,7 @@ import com.capgemini.chess.algorithms.data.enums.PieceType;
 
 public class KingFactory implements Factory {
     @Override
-    public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) throws InvalidMoveException {
+    public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType)  {
 
         int changeOfLocationX = Math.abs(fromPlace.getX() - toPlace.getX());
         int changeOfLocationY = Math.abs(fromPlace.getY() - toPlace.getY());
@@ -22,18 +22,9 @@ public class KingFactory implements Factory {
                     return true;
                 } else if (changeOfLocationX == 1 && changeOfLocationY == 1) {
                     return true;
-                } else throw new
-                        InvalidMoveException();
+                } else
+                    return false;
         }
-
-
-
-
-        }
-
-
-
-
 
 }
 

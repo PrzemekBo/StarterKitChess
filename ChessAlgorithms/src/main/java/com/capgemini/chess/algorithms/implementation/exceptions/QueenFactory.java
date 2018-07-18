@@ -7,16 +7,12 @@ import com.capgemini.chess.algorithms.data.enums.PieceType;
 
 public class QueenFactory implements Factory {
     @Override
-    public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) throws InvalidMoveException {
-        PieceType pieceType = piece.getType();
+    public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) {
+
 
         int changeOfLocationX = Math.abs(fromPlace.getX() - toPlace.getX());
         int changeOfLocationY = Math.abs(fromPlace.getY() - toPlace.getY());
 
-
-
-        switch (pieceType) {
-            case QUEEN:
                 if (fromPlace.getX() - toPlace.getX() > 0 && changeOfLocationY == 0) {
                     return true;
 
@@ -25,17 +21,8 @@ public class QueenFactory implements Factory {
                 } else if (changeOfLocationX == changeOfLocationX) {
                     return true;
                 } else {
-                    throw new InvalidMoveException();
+                    return false;
                 }
         }
-
-
-
-        throw new InvalidMoveException();
-    }
-
-
-
-
 
 }

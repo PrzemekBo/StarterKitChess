@@ -7,32 +7,19 @@ import com.capgemini.chess.algorithms.data.enums.PieceType;
 
 public class RookFactory implements Factory {
     @Override
-    public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) throws InvalidMoveException {
-        PieceType pieceType = piece.getType();
+    public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType){
+
 
         int changeOfLocationX = Math.abs(fromPlace.getX() - toPlace.getX());
         int changeOfLocationY = Math.abs(fromPlace.getY() - toPlace.getY());
 
-
-
-        switch (pieceType) {
-            case ROOK:
                 if (changeOfLocationX > 0 && changeOfLocationY == 0) {
                     return true;
                 } else if (changeOfLocationX == 0 && changeOfLocationY > 0) {
                     return true;
                 } else {
-                    throw new InvalidMoveException();
+                    return false;
                 }
         }
-
-
-
-        throw new InvalidMoveException();
-    }
-
-
-
-
 
 }
