@@ -6,10 +6,10 @@ import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 
-public class KnightFactory implements Factory {
+public class KnightFactory   {
 
 
-    @Override
+    //TODO czy knight ma to implementowac
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) {
 
         int changeOfLocationX = Math.abs(fromPlace.getX() - toPlace.getX());
@@ -25,10 +25,6 @@ public class KnightFactory implements Factory {
 
     }
 
-    @Override
-    public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
-        return false;
-    }
 
 
 }

@@ -266,7 +266,7 @@ public class BoardManager {
         return false;
     }
 
-    //TODO nie jestem pewny tej metody
+
     public static void checkIfIsOnBoard(Coordinate fromPlace, Coordinate toPlace) throws InvalidMoveException {
 
         if (fromPlace.getY() >= Board.SIZE || fromPlace.getY() < 0 || fromPlace.getX() >= Board.SIZE || fromPlace.getX() < 0)
@@ -284,6 +284,15 @@ public class BoardManager {
                 || board.getPieces()[coordinate.getX()][coordinate.getY()].getColor() != calculateNextMoveColor()) {
             throw new InvalidMoveException();
         }
+    }
+
+    private Piece checkPieceInCoordinateFrom(Coordinate from) throws InvalidMoveException {
+        Piece piece = board.getPieceAt(from);
+        if (piece == null) {
+            throw new InvalidMoveException();
+        }
+
+        return piece;
     }
 
 

@@ -4,10 +4,11 @@ import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.Color;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.enums.Piece;
+import com.capgemini.chess.algorithms.data.generated.Board;
 
 
-public class PawnFactory implements Factory {
-    @Override
+public class PawnFactory   {
+
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) {
 
 
@@ -44,7 +45,7 @@ public class PawnFactory implements Factory {
             }
         }
 
-            return false;
-        }
+        return false;
     }
+}
 
