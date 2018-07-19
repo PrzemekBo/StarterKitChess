@@ -263,7 +263,18 @@ public class BoardManager {
     }
 
     private boolean isKingInCheck(Color kingColor) {
+
         Coordinate kingCoordinate = null;
+        if (kingColor.equals(Color.WHITE)) {
+            kingCoordinate = checkWhereIsMyKing(whitePieces, Piece.WHITE_KING);
+        } else {
+            kingCoordinate = checkWhereIsMyKing(blackPieces, Piece.BLACK_KING);
+        }
+
+        if (kingCoordinate == null) {
+            return false;
+        }
+
         return false;
     }
 
@@ -377,6 +388,28 @@ public class BoardManager {
 
         return lastNonAttackMoveIndex;
     }
+
+    //TODO nie jestem pewnz co do metodz w usunietych jets dobra,chyba
+    public static <T, E> Coordinate checkWhereIsMyKing(Map<T, E> myMap, E valueKing) {
+
+        for (Map.Entry<T, E> entry : myMap.entrySet()) {
+            if (entry.getValue().equals(valueKing)) {
+                return (Coordinate) entry.getKey();
+            }
+        }
+        return null;
+    }
+
+/*
+    private boolean checkingIsKingInCheck(Coordinate kingCoordinate, Color kingColor) {
+        if (kingColor.equals(Color.WHITE)) {
+            return checkingIsWhiteKingInCheck(kingCoordinate);
+        } else {
+            return checkingIsBlackKingInCheck(kingCoordinate);
+        }
+    }
+*/
+
 
 
 

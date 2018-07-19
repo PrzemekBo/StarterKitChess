@@ -869,4 +869,8 @@ public class BoardManagerTest {
 		}
 		return counter;
 	}
+
+
+
+
 }
