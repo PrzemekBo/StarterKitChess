@@ -3,8 +3,9 @@ package com.capgemini.chess.algorithms.implementation.exceptions;
 import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.enums.Piece;
+import com.capgemini.chess.algorithms.data.generated.Board;
 
-public class KingFactory   {
+public class KingFactory extends GameValidator   {
 
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType)  {
 
@@ -25,6 +26,11 @@ public class KingFactory   {
                 } else
                     return false;
         }
+
+ /*   @Override
+    public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
+        return true;
+    }*/
 
 
 }

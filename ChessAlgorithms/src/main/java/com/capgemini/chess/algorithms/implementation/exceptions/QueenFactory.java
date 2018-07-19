@@ -6,7 +6,7 @@ import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 
-public class QueenFactory implements Factory {
+public class QueenFactory extends GameValidator {
     @Override
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) {
 
@@ -14,17 +14,19 @@ public class QueenFactory implements Factory {
         int changeOfLocationX = Math.abs(fromPlace.getX() - toPlace.getX());
         int changeOfLocationY = Math.abs(fromPlace.getY() - toPlace.getY());
 
-                if (fromPlace.getX() - toPlace.getX() > 0 && changeOfLocationY == 0) {
-                    return true;
+        if (fromPlace.getX() - toPlace.getX() > 0 && changeOfLocationY == 0) {
+            return true;
 
-                } else if (fromPlace.getX() - toPlace.getX() == 0 && changeOfLocationY > 0) {
-                    return true;
-                } else if (changeOfLocationX == changeOfLocationX) {
-                    return true;
-                } else {
-                    return false;
-                }
+        } else if (fromPlace.getX() - toPlace.getX() == 0 && changeOfLocationY > 0) {
+            return true;
+        } else if (changeOfLocationX == changeOfLocationX) {
+            return true;
+        } else {
+            return false;
         }
+    }
+}
+/*
 
     @Override
     public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
@@ -48,3 +50,4 @@ public class QueenFactory implements Factory {
     }
 
 }
+*/

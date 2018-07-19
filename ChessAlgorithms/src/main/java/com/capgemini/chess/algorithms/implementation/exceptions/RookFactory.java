@@ -6,12 +6,9 @@ import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 
-public class RookFactory implements Factory {
+public class RookFactory extends GameValidator {
 
-    private Board board;
 
-    private Coordinate fromPlace;
-    private Coordinate toPlace;
     @Override
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) {
 
@@ -29,7 +26,7 @@ public class RookFactory implements Factory {
         }
     }
 
-    @Override
+/*    @Override
     public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
         boolean forwardMovement = toPlace.getY() > fromPlace.getY();
         boolean backwardMovement = toPlace.getY() < fromPlace.getY();
@@ -95,6 +92,5 @@ public class RookFactory implements Factory {
             }
         }
         return true;
-    }
+    }*/
 }
-

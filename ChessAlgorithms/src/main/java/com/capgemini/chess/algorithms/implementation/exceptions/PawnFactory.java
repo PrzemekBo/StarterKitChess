@@ -7,7 +7,7 @@ import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.generated.Board;
 
 
-public class PawnFactory implements Factory  {
+public class PawnFactory extends GameValidator  {
 
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) {
 
@@ -50,11 +50,6 @@ public class PawnFactory implements Factory  {
                 return false;
             }
         }
-        return false;
-    }
-
-    @Override
-    public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
         return false;
     }
 }

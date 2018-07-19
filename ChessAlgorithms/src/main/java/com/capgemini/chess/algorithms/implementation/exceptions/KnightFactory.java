@@ -6,7 +6,9 @@ import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.enums.PieceType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 
-public class KnightFactory   {
+public class KnightFactory extends GameValidator  {
+
+
 
 
     //TODO czy knight ma to implementowac
@@ -20,11 +22,17 @@ public class KnightFactory   {
                 } else if (changeOfLocationX == 2 && changeOfLocationY == 1) {
                     return true;
                 } else {
-                    return true;
+                    return false;
                 }
 
     }
+/*
 
+    @Override
+    public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
+        return true;
+    }
+*/
 
 
 }
