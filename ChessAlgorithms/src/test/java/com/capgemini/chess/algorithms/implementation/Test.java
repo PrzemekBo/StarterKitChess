@@ -51,4 +51,43 @@ public class Test {
         assertTrue(exceptionThrown);
     }
 
+    @org.junit.Test
+    public void shouldThrowInvalidMoveExceptionBecauseRookGoOutsideBoard() throws InvalidMoveException {
+        // given
+        board.setPieceAt(Piece.WHITE_ROOK, new Coordinate(2, 2));
+
+        // when
+        BoardManager boardManager = new BoardManager(board);
+
+        boolean exceptionThrown = false;
+        try {
+            boardManager.performMove(new Coordinate(12, 2), new Coordinate(2, 2));
+        } catch (InvalidMoveException e) {
+            exceptionThrown = true;
+        }
+
+        // then
+        assertTrue(exceptionThrown);
+    }
+
+    @org.junit.Test
+    public void shouldReturnTrueIfKiightHaveSomtingOnPath()  {
+        // given
+        board.setPieceAt(Piece.WHITE_KNIGHT, new Coordinate(2, 2));
+        board.setPieceAt(Piece.BLACK_ROOK,new Coordinate(4,2));
+
+        // when
+        BoardManager boardManager = new BoardManager(board);
+
+        boolean exceptionThrown = false;
+        try {
+            boardManager.performMove(new Coordinate(3, 3), new Coordinate(4, 1));
+        } catch (InvalidMoveException e) {
+            exceptionThrown = true;
+        }
+
+        // then
+        assertTrue(exceptionThrown);
+    }
+
 }

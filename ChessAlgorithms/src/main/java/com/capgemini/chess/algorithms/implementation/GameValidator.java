@@ -1,9 +1,10 @@
-package com.capgemini.chess.algorithms.implementation.exceptions;
+package com.capgemini.chess.algorithms.implementation;
 
 import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.enums.Piece;
 import com.capgemini.chess.algorithms.data.generated.Board;
+import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 
 public abstract class GameValidator {
 
@@ -14,6 +15,7 @@ public abstract class GameValidator {
     private int changeMoveX;
     private int changeMoveY;
     private Board board;
+
 
     public abstract boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType);
 
@@ -54,6 +56,7 @@ public abstract class GameValidator {
             throw new InvalidMoveException();
         }
     }
+
     private boolean noClashForwardMovement() {
         for (int j = fromY + 1; j < toX; j++) {
             Coordinate coordinate = new Coordinate(fromX, j);
@@ -93,8 +96,7 @@ public abstract class GameValidator {
         }
 
 
-
-        if (fromX>toX&&fromY>toY) {
+        if (fromX > toX && fromY > toY) {
             for (int x = fromX + 1, y = fromY + 1; x > toX && y > toY; x++, y++) {
                 Coordinate coordinate = new Coordinate(x, y);
                 if (board.getPieceAt(coordinate) != null) {
@@ -102,8 +104,8 @@ public abstract class GameValidator {
                 }
             }
         }
-        if (fromX>toX&&fromY<toY) {
-            for (int x = fromX + 1, y =fromY + 1; x > toX && y < toY; x++, y++) {
+        if (fromX > toX && fromY < toY) {
+            for (int x = fromX + 1, y = fromY + 1; x > toX && y < toY; x++, y++) {
                 Coordinate coordinate = new Coordinate(x, y);
                 if (board.getPieceAt(coordinate) != null) {
                     throw new InvalidMoveException();
@@ -112,16 +114,16 @@ public abstract class GameValidator {
         }
 
 
-        if (fromX<toX&&fromY<toY){
-            for (int x=fromX+1,y=fromY+1;x<toX&&y<toY;x++,y++) {
+        if (fromX < toX && fromY < toY) {
+            for (int x = fromX + 1, y = fromY + 1; x < toX && y < toY; x++, y++) {
                 Coordinate coordinate = new Coordinate(x, y);
                 if (board.getPieceAt(coordinate) != null) {
-                    throw  new InvalidMoveException();
+                    throw new InvalidMoveException();
                 }
             }
 
         }
-        if (fromX<toX&&fromY>toY) {
+        if (fromX < toX && fromY > toY) {
             for (int x = fromX + 1, y = fromY + 1; x < fromX && y > toY; x++, y++) {
                 Coordinate coordinate = new Coordinate(x, y);
                 if (board.getPieceAt(coordinate) != null) {
@@ -129,7 +131,6 @@ public abstract class GameValidator {
                 }
             }
         }
-
 
 
         return true;

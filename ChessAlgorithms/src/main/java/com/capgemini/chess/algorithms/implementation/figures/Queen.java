@@ -1,12 +1,11 @@
-package com.capgemini.chess.algorithms.implementation.exceptions;
+package com.capgemini.chess.algorithms.implementation.figures;
 
 import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.enums.Piece;
-import com.capgemini.chess.algorithms.data.enums.PieceType;
-import com.capgemini.chess.algorithms.data.generated.Board;
+import com.capgemini.chess.algorithms.implementation.GameValidator;
 
-public class QueenFactory extends GameValidator {
+public class Queen extends GameValidator {
     @Override
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) {
 
@@ -26,28 +25,3 @@ public class QueenFactory extends GameValidator {
         }
     }
 }
-/*
-
-    @Override
-    public boolean validateMovePath(Coordinate fromPlace, Coordinate toPlace, Board board) throws InvalidMoveException {
-
-
-        RookFactory rookFactory =new RookFactory();
-        BishopFactory bishopFactory= new BishopFactory();
-
-        rookFactory.validateMovePath(fromPlace,toPlace,board);
-        try {
-            rookFactory.validateMovePath(fromPlace,toPlace,board);
-
-        }catch (InvalidMoveException a){
-            bishopFactory.validateMovePath(fromPlace,toPlace,board);
-
-
-        }
-
-
-        return true;
-    }
-
-}
-*/
