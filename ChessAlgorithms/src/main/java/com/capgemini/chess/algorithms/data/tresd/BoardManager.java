@@ -257,23 +257,68 @@ public class BoardManager {
 
 
 
+        updateLists(move);
+
+        if (isKingInCheck(nextMoveColor)) {
+            addPiecesToLists();
+            throw new KingInCheckException();
+        }
+
+        return move;
+      //  Validator vali = new Validator();
 
 
-        return null;
+
+
+
+/*
+        PieceTypeFactory pieceTypeFactory = new PieceTypeFactory();
+        Factory validator = pieceTypeFactory.getFactoryvalidation(this.board, from);
+        MoveType moveType = setMoveType(performedMove, from, to);
+        validator.moveValidation(piece, from, to, moveType);
+        validator.validateMovePath(from, to,this.board);
+*/
+
+       // MoveType moveType = setMoveType(to, colorOfNextPlayer);
+
+
+
+
+
     }
 
     private boolean isKingInCheck(Color kingColor) {
         Coordinate kingCoordinate = null;
-        return false;
-    }
+        if (kingColor.equals(Color.WHITE)) {
+            kingCoordinate = getCoordinatesByKing(whitePieces, Piece.WHITE_KING);
+        } else {
+            kingCoordinate = getCoordinatesByKing(blackPieces, Piece.BLACK_KING);
+        }
 
+        if (kingCoordinate == null) {
+            return false;
+        }
+
+        return checkingIsKingInCheck(kingCoordinate, kingColor);
+    }
 
     private boolean isAnyMoveValid(Color nextMoveColor){
         return false;
     }
 
+    private Coordinate checkWhereIsMyKing(Color kingColor) throws InvalidMoveException {
 
-
+        for (int x = 0; x < Board.SIZE; x++) {
+            for (int y = 0; y < Board.SIZE; y++) {
+                Coordinate cord = new Coordinate(x, y);
+                if (this.board.getPieceAt(cord) != null && this.board.getPieceAt(cord).getType() == PieceType.KING
+                        && this.board.getPieceAt(cord).getColor() == kingColor) {
+                    return cord;
+                }
+            }
+        }
+        throw new InvalidMoveException();
+    }
 
 
     public static void valideteIfPieceIsOnBoard(Coordinate fromPlace, Coordinate toPlace) throws InvalidMoveException {
@@ -281,6 +326,29 @@ public class BoardManager {
         if (toPlace.getY() >= Board.SIZE || toPlace.getY() < 0 || fromPlace.getX() >= Board.SIZE || fromPlace.getX() < 0)
             throw new InvalidMoveException();
     }
+
+    public static <Coordinate, Piece> Coordinate getCoordinatesByKing(Map<Coordinate, Piece> map, Piece value) {
+
+        for (Map.Entry<Coordinate, Piece> entry : map.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return (Coordinate) entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    private void updateLists(Move move) {
+        if (move.getMovedPiece().getColor().equals(Color.WHITE)) {
+            whitePieces.put(move.getTo(), move.getMovedPiece());
+            whitePieces.remove(move.getFrom());
+            blackPieces.remove(move.getTo());
+        } else {
+            blackPieces.put(move.getTo(), move.getMovedPiece());
+            blackPieces.remove(move.getFrom());
+            whitePieces.remove(move.getTo());
+        }
+    }
+
 
 
 
@@ -378,10 +446,110 @@ public class BoardManager {
         return lastNonAttackMoveIndex;
     }
 
+    public static <T, E> Coordinate checkWhereIsMyKing(Map<T, E> map, E value) {
+
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return (Coordinate) entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    private boolean checkingIsKingInCheck(Coordinate kingCoordinate, Color kingColor) {
+        if (kingColor.equals(Color.WHITE)) {
+            return checkingIsWhiteKingInCheck(kingCoordinate);
+        } else {
+            return checkingIsBlackKingInCheck(kingCoordinate);
+        }
+    }
+
+    // 2 nastpene metody pewnie mozna jakos zuniwersalizowac
+    private boolean checkingIsWhiteKingInCheck(Coordinate kingCoordinate){
+        Validator validator = null;
+        for (Map.Entry<Coordinate, Piece> entry : blackPieces.entrySet()) {
+            Coordinate coordinate = entry.getKey();
+            Piece piece = entry.getValue();
+            validator = movedTypeValidator(piece);
+
+            try {
+                checkIfPieceInCoordinateToIsOpponents(kingCoordinate, Color.WHITE);
+            } catch (InvalidMoveException e1) {
+
+            }
+
+            MoveType moveType = setMoveType(kingCoordinate, Color.WHITE);
+            if (validator.moveValidation(piece, coordinate, kingCoordinate, moveType)) {
+                try {
+                    Board fakeBoard = creatingFakeBoard(piece, coordinate, kingCoordinate);
+                    validator.validateMovePath(coordinate, kingCoordinate, fakeBoard);
+                    return true;
+                } catch (InvalidMoveException e) {
+                    continue;
+                }
+            }
+        }
+        return false;
+    }
 
 
 
-    private void  addToList() {
+    private boolean checkingIsBlackKingInCheck(Coordinate kingCoordinate) {
+        Validator validator = null;
+        for (Map.Entry<Coordinate, Piece> entry : whitePieces.entrySet()) {
+            Coordinate coordinate = entry.getKey();
+            Piece piece = entry.getValue();
+            validator = movedTypeValidator(piece);
+
+            try {
+                checkIfPieceInCoordinateToIsOpponents(kingCoordinate, Color.BLACK);
+            } catch (InvalidMoveException e1) {
+
+            }
+
+            MoveType moveType = setMoveType(kingCoordinate, Color.BLACK);
+            if (validator.moveValidation(piece, coordinate, kingCoordinate, moveType)) {
+                try {
+                    Board fakeBoard = creatingFakeBoard(piece, coordinate, kingCoordinate);
+                    validator.validateMovePath(coordinate, kingCoordinate, fakeBoard);
+                    return true;
+                } catch (InvalidMoveException e) {
+                    continue;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void checkIfPieceInCoordinateToIsOpponents(Coordinate to, Color nextMoveColor) throws InvalidMoveException {
+        Color colorOfDestinationPiece = null;
+
+        if (board.getPieceAt(to) != null) {
+            colorOfDestinationPiece = board.getPieceAt(to).getColor();
+        }
+
+        if (colorOfDestinationPiece != null && colorOfDestinationPiece.equals(nextMoveColor)) {
+            throw new InvalidMoveException();
+        }
+    }
+
+    private Board creatingFakeBoard(Piece piece, Coordinate from, Coordinate to) {
+        Board fakeBoard = new Board();
+        for (Coordinate coordinate : whitePieces.keySet()) {
+            fakeBoard.setPieceAt(whitePieces.get(coordinate), coordinate);
+        }
+
+        for (Coordinate coordinate : blackPieces.keySet()) {
+            fakeBoard.setPieceAt(blackPieces.get(coordinate), coordinate);
+        }
+
+        fakeBoard.setPieceAt(piece, to);
+        fakeBoard.setPieceAt(null, from);
+
+        return fakeBoard;
+    }
+
+    private void addPiecesToLists() {
         whitePieces = new HashMap<Coordinate, Piece>();
         blackPieces = new HashMap<Coordinate, Piece>();
         for (int x = 0; x < 8; x++) {
