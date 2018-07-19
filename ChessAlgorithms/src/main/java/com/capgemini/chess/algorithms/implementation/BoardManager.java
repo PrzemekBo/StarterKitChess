@@ -9,9 +9,7 @@ import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckExcep
 import com.capgemini.chess.algorithms.implementation.figures.*;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -22,7 +20,6 @@ import java.util.Map;
 public class BoardManager {
 
     private Board board = new Board();
-
 
 
     public BoardManager() {
@@ -368,10 +365,6 @@ public class BoardManager {
 
         return lastNonAttackMoveIndex;
     }
-
-
-
-
 
 
 }

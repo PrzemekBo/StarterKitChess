@@ -18,7 +18,7 @@ import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveExcep
 import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
 
 /**
- * Test class for testing {@link BoardManager}
+ * MyTest class for testing {@link BoardManager}
  * 
  * @author Michal Bejm
  *

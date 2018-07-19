@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Test suite containing all tests
+ * MyTest suite containing all tests
  *
  * @author Michal Bejm
  *
