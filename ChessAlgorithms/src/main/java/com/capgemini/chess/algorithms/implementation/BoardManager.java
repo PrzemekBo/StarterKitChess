@@ -1,7 +1,9 @@
 package com.capgemini.chess.algorithms.implementation;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.Move;
@@ -22,6 +24,7 @@ import com.capgemini.chess.algorithms.implementation.exceptions.*;
 public class BoardManager {
 
     private Board board = new Board();
+
 
 
     public BoardManager() {
@@ -232,11 +235,36 @@ public class BoardManager {
 
     private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
 
-        Move performedMove = new Move();
+      //  Move performedMove = new Move();
         valideteIfPieceIsOnBoard(from, to);
         validateIfSpotIsNotNull(from);
         Piece piece = validateIfThePawnIsMoving(from, to);
         Color nextMoveColor = calculateNextMoveColor();
+
+        MoveType moveType = setMoveType(to, nextMoveColor);
+        Validator validator = movedTypeValidator(piece);
+
+
+
+        validateIfPieceCanMoveTo(piece, from, to, moveType);
+
+        Move move = makeAMove(piece, from, to, moveType);
+
+        validateMovePath(piece, from, to, validator);
+
+        Move myMove = new Move();
+        myMove.setFrom(from);
+        myMove.setTo(to);
+        myMove.setMovedPiece(getBoard().getPieceAt(from));
+        if (calculateNextMoveColor() != board.getPieceAt(from).getColor()) {
+            throw new InvalidMoveException();
+        }
+
+
+      //  Validator vali = new Validator();
+
+
+
 
 
 /*
@@ -256,13 +284,48 @@ public class BoardManager {
     }
 
     private boolean isKingInCheck(Color kingColor) {
-
-
+        Coordinate cordOfTheKing = null;
+        try {
+            cordOfTheKing = checkWhereIsMyKing(kingColor);
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        this.board.getMoveHistory().add(null);
+        for (int x = 0; x < Board.SIZE; x++) {
+            for (int y = 0; y < Board.SIZE; y++) {
+                Coordinate cord = new Coordinate(x, y);
+                if (this.board.getPieceAt(cord) != null && this.board.getPieceAt(cord).getColor() != kingColor) {
+                    try {
+                        if (validateMove(cord, cordOfTheKing).getType() == MoveType.CAPTURE) {
+                            this.board.getMoveHistory().remove(this.board.getMoveHistory().size() - 1);
+                            return true;
+                        }
+                    } catch (InvalidMoveException e) {
+                    }
+                }
+            }
+        }
+       // this.board.getMoveHistory().remove(this.board.getMoveHistory().size() - 1);
         return false;
     }
 
+
     private boolean isAnyMoveValid(Color nextMoveColor){
         return false;
+    }
+
+    private Coordinate checkWhereIsMyKing(Color kingColor) throws InvalidMoveException {
+
+        for (int x = 0; x < Board.SIZE; x++) {
+            for (int y = 0; y < Board.SIZE; y++) {
+                Coordinate cord = new Coordinate(x, y);
+                if (this.board.getPieceAt(cord) != null && this.board.getPieceAt(cord).getType() == PieceType.KING
+                        && this.board.getPieceAt(cord).getColor() == kingColor) {
+                    return cord;
+                }
+            }
+        }
+        throw new InvalidMoveException();
     }
 
 
@@ -301,68 +364,50 @@ public class BoardManager {
             throw new InvalidMoveException();
     }
 
-    private void checkIfOnTheSpotIsNotMyPiece(Board board, Coordinate from, Coordinate to)
+
+
+    private Validator movedTypeValidator(Piece piece) {
+        if (piece.getType()==PieceType.BISHOP) {
+            return new Validator(new BishopFactory());
+        } else if (piece.getType()==PieceType.ROOK) {
+            return new Validator(new RookFactory());
+        } else if (piece.getType()==PieceType.QUEEN) {
+            return new Validator(new QueenFactory());
+        } else if (piece.getType()==PieceType.KNIGHT) {
+            return new Validator(new KnightFactory());
+        } else if (piece.getType()==PieceType.KING) {
+            return new Validator(new KingFactory());
+        } else {
+            return new Validator(new PawnFactory());
+        }
+    }
+
+    private void validateIfPieceCanMoveTo(Piece piece, Coordinate from, Coordinate to, MoveType moveType)throws InvalidMoveException {
+        Validator validator = movedTypeValidator(piece);
+        if (!validator.moveValidation(piece, from, to, moveType)) {
+            throw new InvalidMoveException();
+        }
+    }
+
+    private Move makeAMove(Piece piece, Coordinate from, Coordinate to, MoveType moveType) {
+        Move move = new Move();
+        move.setFrom(from);
+        move.setTo(to);
+        move.setMovedPiece(piece);
+        move.setType(moveType);
+        return move;
+    }
+
+
+
+
+
+    private void validateMovePath(Piece piece, Coordinate from, Coordinate to, Validator context)
             throws InvalidMoveException {
-        Piece targetPiece = board.getPieceAt(to);
-        if (targetPiece == null) {
-            return;
-        }
-
-        if (board.getPieceAt(from).getColor() == board.getPieceAt(to).getColor()) {
-            throw new InvalidMoveException();
+        if (!piece.getType().equals(PieceType.KNIGHT)) {
+            context.validateMovePath(from, to, board);
         }
     }
-
-    private void validateIfPieceIsYour(Piece piece, Color colorOfNextPlayer) throws InvalidMoveException {
-        if (piece.getColor().equals(colorOfNextPlayer)) {
-            return;
-        } else {
-
-            throw new InvalidMoveException();
-        }
-    }
-
-    private Coordinate getKingPosition(Board board, Color color) {
-        Coordinate kingCoordinate = null;
-            for (int x = 0; x < Board.SIZE; x++) {
-            for (int y = 0; y < Board.SIZE; y++) {
-
-                Piece testedPiece = board.getPieceAt(new Coordinate(x, y));
-                if (testedPiece != null) {
-                    if (PieceType.KING == testedPiece.getType() && color == testedPiece.getColor()) {
-                        kingCoordinate = new Coordinate(x, y);
-                    }
-                }
-            }
-        }
-        return kingCoordinate;
-    }
-
-/*
-    private MoveType setMoveType(Coordinate to, Color nextMoveColor) {
-        if (board.getPieceAt(to) != null && board.getPieceAt(to).getColor() != nextMoveColor) {
-            return MoveType.CAPTURE;
-        }
-
-        return MoveType.ATTACK;
-    }
-*/
-
-
-    private void setMoveType(Move performedMove, Coordinate from, Coordinate to) {
-        Piece targetPiece = board.getPieceAt(to);
-        if (targetPiece == null) {
-            performedMove.setType(MoveType.ATTACK);
-        } else {
-            performedMove.setType(MoveType.CAPTURE);
-        }
-
-    }
-
-
-
-
-
 
     private Color calculateNextMoveColor() {
         if (this.board.getMoveHistory().size() % 2 == 0) {
