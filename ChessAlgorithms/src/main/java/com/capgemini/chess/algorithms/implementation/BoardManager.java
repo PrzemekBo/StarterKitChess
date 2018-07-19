@@ -147,7 +147,6 @@ public class BoardManager {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -249,11 +248,8 @@ public class BoardManager {
     }
 
     private boolean isKingInCheck(Color kingColor) {
-
-
         return false;
     }
-
 
     private boolean isAnyMoveValid(Color nextMoveColor) {
         return false;
@@ -265,7 +261,6 @@ public class BoardManager {
         if (toPlace.getY() >= Board.SIZE || toPlace.getY() < 0 || fromPlace.getX() >= Board.SIZE || fromPlace.getX() < 0)
             throw new InvalidMoveException();
     }
-
 
     private Piece validateIfThePawnIsMoving(Coordinate from, Coordinate to) throws InvalidMoveException {
         Piece piece = board.getPieceAt(from);
@@ -287,7 +282,6 @@ public class BoardManager {
             throw new InvalidMoveException();
         }
     }
-
 
     private MoveType setMoveType(Coordinate to, Color nextMoveColor) {
         if (board.getPieceAt(to) != null && board.getPieceAt(to).getColor() != nextMoveColor) {

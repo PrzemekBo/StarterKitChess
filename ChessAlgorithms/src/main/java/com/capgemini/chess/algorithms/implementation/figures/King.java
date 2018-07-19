@@ -9,8 +9,6 @@ public class King extends GameValidator {
 
     public boolean moveValidation(Piece piece, Coordinate fromPlace, Coordinate toPlace, MoveType moveType) {
 
-
-        //TODO czy king ma to implementowac
         int changeOfLocationX = Math.abs(fromPlace.getX() - toPlace.getX());
         int changeOfLocationY = Math.abs(fromPlace.getY() - toPlace.getY());
 
